@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ac-deployment
+  namespace: custom-ac-namespace
+  labels:
+    app: nginx-ac
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-ac
+  template:
+    metadata:
+      labels:
+        app: nginx-ac
+    spec:
+      containers:
+        - name: nginx-ac
+          image: nginx:1.24
+          ports:
+            - containerPort: 80
