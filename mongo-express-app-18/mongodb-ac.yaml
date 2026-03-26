@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-ac-deployment
+  labels:
+    app: mongodb-ac
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-ac
+  template:
+    metadata:
+      labels:
+        app: mongodb-ac
+    spec:
+      containers:
+        - name: mongodb-ac
+          image: mongo
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-ac-secret
+                  key: mongo-root-username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-ac-secret
+                  key: mongo-root-password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # Internal Service
+  name: mongodb-ac-service
+spec:
+  selector:
+    app: mongodb-ac
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

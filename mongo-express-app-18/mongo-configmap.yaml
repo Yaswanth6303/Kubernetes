@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-ac-configmap
+data:
+  # This value represents the internal service name used to connect to MongoDB.
+  # Requests from other pods should use this service name to reach the MongoDB pod.
+  # Kubernetes provides built-in DNS, so the service name acts as a hostname.
+  # In this case, "mongodb-ac-service" resolves to the MongoDB service inside the cluster.
+  database-url: mongodb-ac-service
